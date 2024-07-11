@@ -7,39 +7,36 @@
 
 #include <stdio.h>
 
-int partition(int a[], int low, int high){
-    int pivot = a[low];
-    int i = low + 1;
-    int j = high;
+int partition(int a[], int p, int q) {
+    int pivot = a[p];
+    int i = p - 1;
+    int j = q + 1;
 
-    while(1){
-        while(a[i] <= pivot && i <= high){
+    while(i < j){
+        do{
             i++;
-        }
-        while(a[j] > pivot && j >= low){
+        }while(a[i] < pivot);
+
+        do{
             j--;
-        }
+        }while(a[j] > pivot);
+
         if(i < j){
             int temp = a[i];
             a[i] = a[j];
             a[j] = temp;
-        }else{
-            break;
         }
-    }
 
-    int temp = a[low];
-    a[low] = a[j];
-    a[j] = temp;
+    }
 
     return j;
 }
 
-void quick_sort(int a[], int low, int high){
-    if(low < high){
-        int j = partition(a, low, high);
-        quick_sort(a, low, j-1);
-        quick_sort(a, j+1, high);
+void quick_sort(int list[], int p, int q) {
+    if (p < q) {
+        int r = partition(list, p, q);
+        quick_sort(list, p, r);
+        quick_sort(list, r + 1, q);
     }
 }
 
@@ -50,14 +47,19 @@ void print_array(int a[], int size) {
     printf("\n");
 }
 
-int main(void){
-    int a[] = {10, 16, 8, 12, 15, 6, 3, 9, 5};
-    int n = sizeof(a) /sizeof(a[0]);
+int main() {
+    int listSize;
+    printf("Enter the size of the array: ");
+    scanf("%d", &listSize);
 
-    quick_sort(a, 0, n-1);
-    print_array(a, n);
+    int a[listSize];
+    printf("Enter the elements of the array: ");
+    for(int i = 0; i < listSize; i++){
+        scanf("%d", &a[i]);
+    }
 
+    quick_sort(a, 0, listSize - 1);
+    print_array(a, listSize);
 
-
+    return 0;
 }
-
